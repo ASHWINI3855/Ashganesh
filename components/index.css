@@ -1,0 +1,103 @@
+/* ─── Google Fonts — MUST be first ──────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: #060010;
+    color: white;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+}
+
+/* ─── Hero Blur Animation ───────────────────────────── */
+@keyframes blurIn {
+  0%   { filter: blur(14px); opacity: 0; transform: translateY(10px); }
+  100% { filter: blur(0px);  opacity: 1; transform: translateY(0);    }
+}
+
+.animate-blur-in          { animation: blurIn 1.4s cubic-bezier(0.22,1,0.36,1) both; }
+.animate-blur-in-delay    { animation: blurIn 1.4s cubic-bezier(0.22,1,0.36,1) 0.3s both; }
+.animate-blur-in-delay-2  { animation: blurIn 1.4s cubic-bezier(0.22,1,0.36,1) 0.6s both; }
+
+/* ─── Card Entrance ─────────────────────────────────── */
+@keyframes cardEntrance {
+  0%   { opacity: 0; transform: translateY(40px) scale(0.94); filter: blur(6px); }
+  100% { opacity: 1; transform: translateY(0)    scale(1);    filter: blur(0);   }
+}
+
+.card-enter { animation: cardEntrance 0.8s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+/* ─── Stars / Particles ─────────────────────────────── */
+@keyframes floatUp {
+  0%   { opacity: 0; transform: translateY(0)    scale(0);   }
+  20%  { opacity: 1;                                          }
+  100% { opacity: 0; transform: translateY(-60px) scale(1.2); }
+}
+
+.star-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: floatUp 1.2s ease-out forwards;
+}
+
+/* ─── Ripple ────────────────────────────────────────── */
+@keyframes ripple {
+  0%   { transform: scale(0); opacity: 0.6; }
+  100% { transform: scale(4); opacity: 0;   }
+}
+
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(132, 0, 255, 0.35);
+  animation: ripple 0.7s ease-out forwards;
+  pointer-events: none;
+  transform-origin: center;
+}
+
+/* ─── B&W Image Hover ───────────────────────────────── */
+.image-bw {
+  filter: grayscale(100%);
+  transition: filter 0.6s ease, transform 0.8s ease;
+}
+
+.group:hover .image-bw { filter: grayscale(0%); }
+
+/* ─── Grid Background ───────────────────────────────── */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(132, 0, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(132, 0, 255, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ─── Glow Pulse ────────────────────────────────────── */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(132,0,255,0.15); }
+  50%       { box-shadow: 0 0 40px rgba(132,0,255,0.35); }
+}
+
+.glow-pulse { animation: glowPulse 3s ease-in-out infinite; }
+
+/* ─── Scrollbars ────────────────────────────────────── */
+::-webkit-scrollbar          { width: 8px; }
+::-webkit-scrollbar-track    { background: #060010; }
+::-webkit-scrollbar-thumb    { background: #1a0040; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #3a0080; }
+
+.custom-scrollbar::-webkit-scrollbar       { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #2a0060; border-radius: 10px; }
