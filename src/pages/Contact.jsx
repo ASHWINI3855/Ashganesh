@@ -128,18 +128,20 @@ const Contact = () => {
       return;
     }
 
-    setLoading(true);
-    setStatus(null);
+    // 1. WhatsApp Integration (Constructing the message first)
+    const waMessage = `🌟 Welcome to The Corner Stone Groups - Your Career Partner!\nWe're here to transform your Professional Journey with Personalized Placement Solutions. 💼🚀\n\nName: ${formData.nm}\nEmail: ${formData.em}\nPhone: ${formData.ph}\nSubject: ${formData.sb}\nMessage: ${formData.mg}`;
+    const waUrl = `https://wa.me/916381951152?text=${encodeURIComponent(waMessage)}`;
 
+    // Open WhatsApp directly and instantly
+    window.open(waUrl, '_blank');
+
+    // Update UI status
+    setStatus('success');
+    setFormData({ nm: '', em: '', ph: '', sb: '', mg: '' });
+
+    // 2. Database Integration (In Background - Non-blocking)
     try {
-      // 1. WhatsApp Integration (Constructing the message first)
-      const waMessage = `🌟 Welcome to The Corner Stone Groups - Your Career Partner!\nWe're here to transform your Professional Journey with Personalized Placement Solutions. 💼🚀\n\nName: ${formData.nm}\nEmail: ${formData.em}\nPhone: ${formData.ph}\nSubject: ${formData.sb}\nMessage: ${formData.mg}`;
-      const waUrl = `https://wa.me/916381951152?text=${encodeURIComponent(waMessage)}`;
-
-      console.log("Submitting form data to Supabase...", formData);
-
-      // 2. Database Integration
-      const { data, error: dbError } = await supabase
+      supabase
         .from('contact_submissions')
         .insert([{
           name: formData.nm,
@@ -148,51 +150,21 @@ const Contact = () => {
           subject: formData.sb,
           message: formData.mg
         }])
-        .select();
-
-      if (dbError) {
-        console.error("Supabase Insert Error:", dbError.message);
-        console.error("Full error object:", dbError);
-        setErrorMessage(dbError.message);
-        setStatus('error');
-        setLoading(false);
-        return; 
-      }
-
-      console.log("Supabase Insert Success:", data);
-
-      // 3. Call Edge Function for Email (Non-blocking)
-      try {
-        const { error: funcError } = await supabase.functions.invoke('send-contact-email', {
-          body: {
-            name: formData.nm,
-            email: formData.em,
-            phone: formData.ph,
-            subject: formData.sb,
-            message: formData.mg
-          },
+        .then(({ error: dbError }) => {
+          if (!dbError) {
+             supabase.functions.invoke('send-contact-email', {
+              body: {
+                name: formData.nm,
+                email: formData.em,
+                phone: formData.ph,
+                subject: formData.sb,
+                message: formData.mg
+              },
+            }).catch(() => {});
+          }
         });
-        if (funcError) console.warn("Email function failed:", funcError.message);
-        else console.log("Email function success");
-      } catch (e) {
-        console.warn("Email notification skipped:", e.message);
-      }
-
-      // Success flow
-      setStatus('success');
-      setFormData({ nm: '', em: '', ph: '', sb: '', mg: '' });
-      
-      // Redirect to WhatsApp after short delay
-      setTimeout(() => {
-        window.open(waUrl, '_blank');
-      }, 1000);
-
     } catch (err) {
-      console.error("Critical Submission Error:", err);
-      setErrorMessage(err.message || "An unexpected error occurred.");
-      setStatus('error');
-    } finally {
-      setLoading(false);
+      console.error("Background Submission Error:", err);
     }
   };
 
@@ -312,31 +284,22 @@ const Contact = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap', marginTop: 6 }}>
                 <button
                   type="submit"
-                  disabled={loading}
                   style={{
-                    background: loading ? '#333' : '#8b5cf6', color: '#fff', border: 'none',
+                    background: '#25D366', color: '#fff', border: 'none',
                     padding: '13px 28px', borderRadius: 50, fontSize: 14,
-                    fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer',
+                    fontWeight: 700, cursor: 'pointer',
                     display: 'inline-flex', alignItems: 'center', gap: 9,
                     fontFamily: "'Inter',sans-serif",
                     transition: 'background .3s, transform .2s, box-shadow .3s',
                   }}
-                  onMouseEnter={e => { if(!loading) { e.currentTarget.style.background='#7c3aed'; e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.boxShadow='0 8px 28px rgba(139,92,246,.4)'; } }}
-                  onMouseLeave={e => { if(!loading) { e.currentTarget.style.background='#8b5cf6'; e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow=''; } }}
+                  onMouseEnter={e => { e.currentTarget.style.background='#128C7E'; e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.boxShadow='0 8px 28px rgba(37,211,102,.4)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background='#25D366'; e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow=''; }}
                 >
-                  {loading ? (
-                    <>
-                      <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <svg viewBox="0 0 24 24" style={{ width:14, height:14, stroke:'#fff', fill:'none', strokeWidth:2 }}>
-                        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-                      </svg>
-                      Send
-                    </>
-                  )}
+                  <svg viewBox="0 0 24 24" style={{ width:16, height:16, fill:'#fff' }}>
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.117 1.522 5.845L.057 23.943l6.304-1.654A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.789 9.789 0 01-5.006-1.372l-.359-.215-3.722.977.994-3.63-.234-.373A9.821 9.821 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/>
+                  </svg>
+                  Send Message
                 </button>
 
                 <label style={{ display:'flex', alignItems:'center', gap:8 }}>
