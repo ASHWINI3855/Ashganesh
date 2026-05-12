@@ -15,13 +15,6 @@ export default defineConfig({
     // ── Chunk splitting for optimal caching ─────────────────────────────
     rollupOptions: {
       output: {
-        // Separate vendor chunk → cached independently of app code
-        manualChunks: {
-          'vendor-react':   ['react', 'react-dom', 'react-router-dom'],
-          'vendor-motion':  ['framer-motion', 'motion'],
-          'vendor-supabase': ['@supabase/supabase-js'],
-          'vendor-ui':      ['lucide-react', 'clsx', 'tailwind-merge'],
-        },
         // Content-hash filenames → long-term caching (immutable assets)
         entryFileNames:  'assets/[name]-[hash].js',
         chunkFileNames:  'assets/[name]-[hash].js',
