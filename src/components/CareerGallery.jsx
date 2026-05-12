@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
-import OptimizedImage from './OptimizedImage';
-import { supabase } from '../lib/supabase';
+import SupabaseImage from './SupabaseImage';
 import bento1 from '../assets/images/bento1.jpg';
 import bento2 from '../assets/images/bento2.jpg';
 import bento3 from '../assets/images/bento3.jpg';
@@ -13,80 +12,7 @@ import bento7 from '../assets/images/bento7.jpg';
 const defaultImages = [bento1, bento2, bento3, bento4, bento5, bento6, bento7];
 
 export default function LShapeBentoGrid({ images: externalImages }) {
-  const [images, setImages] = useState(() => {
-    if (externalImages && externalImages.length > 0) {
-      return externalImages.slice(0, 7).map((url, idx) => ({ id: idx, url, failed: false, isDb: false }));
-    }
-    return defaultImages.slice(0, 7).map((url, idx) => ({ id: idx, url, fallbackUrl: url, failed: false, isDb: false }));
-  });
   const gridRef = useRef(null);
-
-  useEffect(() => {
-    async function fetchImages() {
-      // If external images provided (legacy prop), use them
-      if (externalImages && externalImages.length > 0) {
-        return;
-      }
-      
-      try {
-        const { data, error } = await supabase
-          .from('media_assets')
-          .select('section, public_url')
-          .like('section', 'bento%')
-          .order('section');
-          
-        if (error) throw error;
-        
-        if (data && data.length > 0) {
-          const formatted = data.slice(0, 7).map((item, idx) => ({
-            id: idx,
-            section: item.section,
-            url: item.public_url,
-            fallbackUrl: defaultImages[idx] || defaultImages[0],
-            failed: false,
-            isDb: true
-          }));
-          // Pad with fallbacks if needed
-          while (formatted.length < 7) {
-            const idx = formatted.length;
-            formatted.push({ id: idx, url: defaultImages[idx] || defaultImages[0], failed: false, isDb: false });
-          }
-          setImages(formatted);
-        } else {
-          throw new Error("No data returned");
-        }
-      } catch (err) {
-        console.warn("Failed to fetch gallery images from Supabase, using fallbacks:", err);
-        setImages(defaultImages.slice(0, 7).map((url, idx) => ({ id: idx, url, fallbackUrl: url, failed: false, isDb: false })));
-      }
-    }
-    
-    fetchImages();
-  }, [externalImages]);
-
-  // ── Image reveal observer ──────────────────────────────
-  useEffect(() => {
-    if (!gridRef.current) return;
-
-    const revealEls = gridRef.current.querySelectorAll('.img-reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('revealed');
-          }, i * 150);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-
-    revealEls.forEach(el => observer.observe(el));
-    return () => observer.disconnect();
-  }, [images]); // re-run when images load
-
-  const handleImageError = (id) => {
-    setImages(prev => prev.map(img => img.id === id ? { ...img, failed: true } : img));
-  };
 
   const cardVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -101,7 +27,10 @@ export default function LShapeBentoGrid({ images: externalImages }) {
     })
   };
 
-  const validImages = images.filter(img => !img.failed);
+  const isExternal = externalImages && externalImages.length > 0;
+  const slots = isExternal 
+    ? externalImages.slice(0, 7) 
+    : defaultImages.slice(0, 7);
 
   const getImageClass = (index) => {
     const layoutMap = [
@@ -141,28 +70,26 @@ export default function LShapeBentoGrid({ images: externalImages }) {
           </motion.div>
 
           {/* Dynamic Images */}
-          {validImages.length > 0 ? (
-            validImages.map((img, index) => (
+          {slots.length > 0 ? (
+            slots.map((url, index) => (
               <motion.div
-                key={img.id}
+                key={index}
                 custom={index + 1}
                 variants={cardVariants}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "0px 0px -100px 0px" }}
                 whileHover={{ scale: 1.02, boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }}
-                className={`${getImageClass(index)} img-reveal rounded-2xl group cursor-pointer overflow-hidden`}
+                className={`${getImageClass(index)} rounded-2xl group cursor-pointer overflow-hidden relative`}
               >
-                <OptimizedImage
-                  src={img.url}
+                <SupabaseImage
+                  section={isExternal ? undefined : `bento${index + 1}`}
+                  fallbackSrc={url}
                   alt={`Gallery view ${index + 1}`}
-                  fallbackSrc={img.fallbackUrl}
                   aspectRatio="auto"
                   wrapperClassName="w-full h-full"
-                  className="image-bw group-hover:brightness-110"
+                  className="w-full h-full object-cover image-bw group-hover:brightness-110 transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, 25vw"
-                  fadeIn={false}
-                  onImageLoad={() => img.failed && handleImageError(img.id)}
                 />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300 pointer-events-none rounded-2xl" />
               </motion.div>
@@ -175,7 +102,7 @@ export default function LShapeBentoGrid({ images: externalImages }) {
 
           {/* 2. CTA Card */}
           <motion.div
-            custom={validImages.length + 1}
+            custom={slots.length + 1}
             variants={cardVariants}
             initial="hidden"
             whileInView="visible"

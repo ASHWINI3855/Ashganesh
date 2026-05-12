@@ -180,7 +180,7 @@ export function SupabaseImage({
             ref={imgRef}
             src={finalSrc}
             alt={alt}
-            loading={priority ? 'eager' : 'lazy'}
+            loading="eager"
             decoding={priority ? 'sync' : 'async'}
             fetchPriority={priority ? 'high' : 'auto'}
             onLoad={handleLoad}
