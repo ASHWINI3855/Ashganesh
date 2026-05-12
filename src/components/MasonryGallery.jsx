@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import SupabaseImage from './SupabaseImage';
+import OptimizedImage from './OptimizedImage';
 
 const initialGallerySlots = [
   // Top Row (2 columns)
@@ -152,15 +153,19 @@ const MasonryGallery = () => {
                   <SupabaseImage
                     section={slot.section}
                     fallbackSrc={slot.fallbackSrc}
-                    alt={slot.alt}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    alt={slot.alt || `Gallery Image ${slot.id}`}
+                    aspectRatio="auto"
+                    wrapperClassName="w-full h-full"
+                    className="group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                 ) : (
-                  <img 
-                    src={slot.src} 
-                    alt={`Gallery Image ${slot.id}`} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                    loading="lazy"
+                  <OptimizedImage
+                    src={slot.src}
+                    alt={`Gallery Image ${slot.id}`}
+                    aspectRatio="auto"
+                    wrapperClassName="w-full h-full"
+                    className="group-hover:scale-105 transition-transform duration-700 ease-out"
+                    sizes="(max-width: 768px) 100vw, 33vw"
                   />
                 )}
                 {/* Subtle overlay */}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-
+import OptimizedImage from './OptimizedImage';
 import { supabase } from '../lib/supabase';
 import bento1 from '../assets/images/bento1.jpg';
 import bento2 from '../assets/images/bento2.jpg';
@@ -13,14 +13,18 @@ import bento7 from '../assets/images/bento7.jpg';
 const defaultImages = [bento1, bento2, bento3, bento4, bento5, bento6, bento7];
 
 export default function LShapeBentoGrid({ images: externalImages }) {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(() => {
+    if (externalImages && externalImages.length > 0) {
+      return externalImages.slice(0, 7).map((url, idx) => ({ id: idx, url, failed: false, isDb: false }));
+    }
+    return defaultImages.slice(0, 7).map((url, idx) => ({ id: idx, url, fallbackUrl: url, failed: false, isDb: false }));
+  });
   const gridRef = useRef(null);
 
   useEffect(() => {
     async function fetchImages() {
       // If external images provided (legacy prop), use them
       if (externalImages && externalImages.length > 0) {
-        setImages(externalImages.slice(0, 7).map((url, idx) => ({ id: idx, url, failed: false, isDb: false })));
         return;
       }
       
@@ -147,30 +151,19 @@ export default function LShapeBentoGrid({ images: externalImages }) {
                 whileInView="visible"
                 viewport={{ once: true, margin: "0px 0px -100px 0px" }}
                 whileHover={{ scale: 1.02, boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }}
-                className={`${getImageClass(index)} img-reveal rounded-2xl group cursor-pointer`}
+                className={`${getImageClass(index)} img-reveal rounded-2xl group cursor-pointer overflow-hidden`}
               >
-                {img.isDb ? (
-                  <img
-                    src={img.url}
-                    alt={`Gallery view ${index + 1}`}
-                    loading="lazy"
-                    onError={(e) => {
-                      if (!img.failed) {
-                        e.target.src = img.fallbackUrl;
-                        handleImageError(img.id);
-                      }
-                    }}
-                    className="grayscale group-hover:grayscale-0 group-hover:brightness-110 transition-filter duration-500 w-full h-full object-cover"
-                  />
-                ) : (
-                  <img
-                    src={img.url}
-                    alt={`Gallery view ${index + 1}`}
-                    loading="lazy"
-                    onError={() => handleImageError(img.id)}
-                    className="grayscale group-hover:grayscale-0 group-hover:brightness-110 transition-filter duration-500 w-full h-full object-cover"
-                  />
-                )}
+                <OptimizedImage
+                  src={img.url}
+                  alt={`Gallery view ${index + 1}`}
+                  fallbackSrc={img.fallbackUrl}
+                  aspectRatio="auto"
+                  wrapperClassName="w-full h-full"
+                  className="image-bw group-hover:brightness-110"
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  fadeIn={false}
+                  onImageLoad={() => img.failed && handleImageError(img.id)}
+                />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300 pointer-events-none rounded-2xl" />
               </motion.div>
             ))

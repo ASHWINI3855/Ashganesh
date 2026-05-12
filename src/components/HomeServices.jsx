@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import OptimizedImage from './OptimizedImage';
 import maldivesImgFallback from '../assets/images/maldives_recruitment.jpg';
 import singaporeImgFallback from '../assets/images/singapore_study.jpg';
 
@@ -183,12 +184,14 @@ const HomeServices = () => {
                   className="absolute w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-[#333]" 
                   style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
                 >
-                  <img 
-                    src={service.imageUrl || service.fallbackImage} 
-                    alt={service.preview.title} 
-                    className="w-full h-full object-cover" 
-                    loading="lazy"
-                    onError={(e) => { e.target.src = service.fallbackImage; }}
+                  <OptimizedImage
+                    src={service.imageUrl || service.fallbackImage}
+                    fallbackSrc={service.fallbackImage}
+                    alt={service.preview.title}
+                    aspectRatio="auto"
+                    wrapperClassName="w-full h-full"
+                    objectFit="cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
 

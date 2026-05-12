@@ -3,6 +3,7 @@ import { motion, useMotionValue, useMotionTemplate } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { cn } from '../lib/utils';
 import gsap from 'gsap';
+import OptimizedImage from './OptimizedImage';
 
 // ─── Particle System ──────────────────────────────────────────────────────────
 const StarParticle = ({ x, y, color = '132, 0, 255' }) => {
@@ -226,11 +227,13 @@ const MagicBentoCard = ({
       <div className="absolute inset-[1px] rounded-[inherit] overflow-hidden bg-[#0a0018]">
         {/* Image */}
         <div className="absolute inset-0">
-          <img
+          <OptimizedImage
             src={image}
             alt=""
-            loading="lazy"
-            className="w-full h-full object-cover image-bw group-hover:scale-110 transition-transform duration-[900ms] ease-out"
+            aspectRatio="auto"
+            wrapperClassName="w-full h-full"
+            className="image-bw group-hover:scale-110 transition-transform duration-[900ms] ease-out"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
           />
         </div>
 

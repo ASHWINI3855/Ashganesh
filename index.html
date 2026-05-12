@@ -2,21 +2,70 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Corner Stone | Global Recruitment & Education Partners</title>
-    <meta name="description"
-        content="Connecting talent with global opportunities in recruitment and education. Specialist in Maldives recruitment and study in Singapore." />
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ── SEO ─────────────────────────────────────────────────────────── -->
+  <title>Corner Stone | Global Recruitment &amp; Education Partners</title>
+  <meta name="description"
+    content="Connecting talent with global opportunities in recruitment and education. Specialist in Maldives recruitment and study in Singapore." />
+  <meta name="robots" content="index, follow" />
+
+  <!-- ── Favicon ──────────────────────────────────────────────────────── -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- ── DNS Prefetch & Preconnect (fonts, images, Supabase) ──────────── -->
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Unsplash CDN (hero image) -->
+  <link rel="preconnect" href="https://images.unsplash.com" />
+  <link rel="dns-prefetch" href="https://images.unsplash.com" />
+
+  <!-- Avatar CDN used in Hero -->
+  <link rel="dns-prefetch" href="https://i.pravatar.cc" />
+
+  <!-- Supabase storage CDN -->
+  <link rel="preconnect" href="https://wlibhfnlcwdxdofqegkj.supabase.co" />
+  <link rel="dns-prefetch" href="https://wlibhfnlcwdxdofqegkj.supabase.co" />
+
+  <!-- ── Google Fonts ──────────────────────────────────────────────────── -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- ── Critical hero image preload (WebP + JPEG fallback) ───────────── -->
+  <!--
+    Preloading the hero image means the browser fetches it in parallel
+    with CSS/JS parsing — eliminates LCP delay entirely.
+  -->
+  <link
+    rel="preload"
+    as="image"
+    href="https://images.unsplash.com/photo-1522071823957-0985705299ad?auto=format&fm=webp&q=80&w=1080&fit=crop"
+    imagesrcset="
+      https://images.unsplash.com/photo-1522071823957-0985705299ad?auto=format&fm=webp&q=80&w=480&fit=crop  480w,
+      https://images.unsplash.com/photo-1522071823957-0985705299ad?auto=format&fm=webp&q=80&w=800&fit=crop  800w,
+      https://images.unsplash.com/photo-1522071823957-0985705299ad?auto=format&fm=webp&q=80&w=1080&fit=crop 1080w,
+      https://images.unsplash.com/photo-1522071823957-0985705299ad?auto=format&fm=webp&q=80&w=1600&fit=crop 1600w
+    "
+    imagesizes="(max-width: 1024px) 0px, 50vw"
+    fetchpriority="high"
+    crossorigin
+  />
+
+  <!-- ── Open Graph / Social ──────────────────────────────────────────── -->
+  <meta property="og:title" content="Corner Stone | Global Recruitment &amp; Education Partners" />
+  <meta property="og:description"
+    content="Connecting talent with global opportunities in recruitment and education." />
+  <meta property="og:type" content="website" />
 </head>
 
 <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
 </body>
 
 </html>

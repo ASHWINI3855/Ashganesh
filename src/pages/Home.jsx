@@ -170,10 +170,11 @@ const Home = () => {
               <SupabaseVideo
                 section="why_choose_us"
                 fallbackSrc="/why-choose-us.mp4"
+                posterSrc="https://images.unsplash.com/photo-1522071823957-0985705299ad?auto=format&fm=webp&q=80&w=400&fit=crop"
                 style={{
                   width: '100%',
                   height: '100%',
-                  objectFit: 'contain',
+                  objectFit: 'cover',
                   display: 'block',
                   background: '#000',
                 }}

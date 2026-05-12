@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion, useInView, useAnimation } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { cn } from '../lib/utils';
+import OptimizedImage from './OptimizedImage';
 
 const ImageCard = ({ image, index, className, isCTA }) => {
   const controls = useAnimation();
@@ -56,16 +57,15 @@ const ImageCard = ({ image, index, className, isCTA }) => {
         className
       )}
     >
-      <div className="absolute inset-0 overflow-hidden">
-        <img 
-          src={image} 
-          alt="" 
-          loading="lazy"
-          className="w-full h-full object-cover grayscale transition-transform duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0"
-          style={{ pointerEvents: 'none' }}
-        />
-      </div>
-      {/* Subtle overlay to blend into dark bg slightly better and add contrast for hover */}
+      <OptimizedImage
+        src={image}
+        alt=""
+        aspectRatio="auto"
+        wrapperClassName="absolute inset-0"
+        className="image-bw group-hover:scale-105 transition-transform duration-700 ease-out"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+      />
+      {/* Subtle overlay */}
       <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
     </motion.div>
   );

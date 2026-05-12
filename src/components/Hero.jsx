@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import OptimizedImage from './OptimizedImage';
 
 const Hero = () => {
   return (
@@ -50,7 +51,7 @@ const Hero = () => {
             <div className="flex -space-x-3">
               {[1, 2, 3, 4].map((i) => (
                 <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-gray-200 overflow-hidden">
-                  <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="User" />
+                  <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="User" loading="lazy" decoding="async" width="40" height="40" />
                 </div>
               ))}
               <div className="w-10 h-10 rounded-full border-2 border-white bg-primary flex items-center justify-center text-white text-xs font-bold">
@@ -69,10 +70,14 @@ const Hero = () => {
           className="relative hidden lg:block"
         >
           <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-8 border-white">
-            <img 
-              src="https://images.unsplash.com/photo-1522071823957-0985705299ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-              alt="Team collaboration" 
-              className="w-full h-auto"
+            <OptimizedImage
+              src="https://images.unsplash.com/photo-1522071823957-0985705299ad?ixlib=rb-4.0.3&fit=crop&w=800&q=80"
+              alt="Team of professionals collaborating in a modern office"
+              priority={true}
+              aspectRatio="4/3"
+              objectFit="cover"
+              sizes="(max-width: 1024px) 0px, 50vw"
+              wrapperClassName="rounded-2xl"
             />
           </div>
           {/* Decorative Floaties */}

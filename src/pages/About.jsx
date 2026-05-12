@@ -30,6 +30,7 @@ const About = () => {
             fallbackSrc={logoFallback}
             alt="The Corner Stones Logo" 
             className="w-full h-full object-contain"
+            priority={true}
           />
         </motion.div>
 
