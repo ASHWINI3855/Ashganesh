@@ -24,9 +24,6 @@ export default defineConfig({
 
     // ── Source maps in production (optional: remove for tighter bundle)
     sourcemap: false,
-
-    // ── Minification
-    minify: 'esbuild',
   },
 
   // ── Development optimizations ──────────────────────────────────────────
