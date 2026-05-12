@@ -57,7 +57,7 @@ const Navbar = () => {
             CS
           </div>
           <span className="font-extrabold text-lg tracking-tight text-white">
-            Corner Stone
+            The Corner Stone Groups
           </span>
         </Link>
 

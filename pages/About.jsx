@@ -41,7 +41,7 @@ const About = () => {
               WebkitTextFillColor: 'transparent',
             }}
           >
-            Corner Stone Groups
+            The Corner Stone Groups
           </span>
         </motion.h1>
 

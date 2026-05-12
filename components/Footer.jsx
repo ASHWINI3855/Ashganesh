@@ -13,7 +13,7 @@ const Footer = () => (
           >
             CS
           </div>
-          <span className="font-extrabold text-lg text-white">Corner Stone</span>
+          <span className="font-extrabold text-lg text-white">The Corner Stone Groups</span>
         </div>
         <p className="text-white/40 text-sm leading-relaxed mb-8">
           Empowering individuals and businesses to reach their global potential through expert recruitment and education.
@@ -54,7 +54,7 @@ const Footer = () => (
 
     {/* Bottom bar */}
     <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-purple-900/15 flex flex-col md:flex-row justify-between items-center gap-4 text-white/25 text-xs">
-      <p>© 2026 Corner Stone International. All rights reserved.</p>
+      <p>© 2026 The Corner Stone Groups International. All rights reserved.</p>
       <div className="flex gap-6">
         <a href="#" className="hover:text-white/60 transition-colors">Privacy Policy</a>
         <a href="#" className="hover:text-white/60 transition-colors">Terms of Service</a>

@@ -28,7 +28,7 @@ const About = () => {
           <SupabaseImage 
             section="logo"
             fallbackSrc={logoFallback}
-            alt="The Corner Stones Logo" 
+            alt="The Corner Stone Groups Logo" 
             className="w-full h-full object-contain"
             priority={true}
           />
@@ -48,7 +48,7 @@ const About = () => {
               WebkitTextFillColor: 'transparent',
             }}
           >
-            The Corner Stones
+            The Corner Stone Groups
           </span>
         </motion.h1>
 
@@ -58,7 +58,7 @@ const About = () => {
           transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
           className="text-gray-300 text-lg md:text-xl leading-relaxed md:leading-loose max-w-[700px] bg-white/5 border border-white/10 p-8 md:p-12 rounded-3xl shadow-2xl backdrop-blur-sm"
         >
-          The Corner Stones is a Professional Placement Service specializing in hiring and supplying qualified candidates, significantly reducing HR workload. We also deliver top-notch IELTS coaching, Spoken English classes, and comprehensive Soft Skill training to prepare candidates thoroughly. Our expertise ensures clients receive highly skilled professionals who make an immediate impact. Committed to integrity and excellence, we streamline the company hiring process with precision. Discover talent beyond expectations with The Corner Stones.
+          The Corner Stone Groups is a Professional Placement Service specializing in hiring and supplying qualified candidates, significantly reducing HR workload. We also deliver top-notch IELTS coaching, Spoken English classes, and comprehensive Soft Skill training to prepare candidates thoroughly. Our expertise ensures clients receive highly skilled professionals who make an immediate impact. Committed to integrity and excellence, we streamline the company hiring process with precision. Discover talent beyond expectations with The Corner Stone Groups.
         </motion.p>
       </div>
     </div>

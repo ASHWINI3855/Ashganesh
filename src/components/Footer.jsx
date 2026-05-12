@@ -55,7 +55,7 @@ const Footer = () => {
 
       {/* Optional Copyright bar - keeping it minimal */}
       <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[#5a5a5a] text-[11px] font-bold uppercase tracking-[0.2em]">
-        <p>© 2026 THE CORNER STONES. ALL RIGHTS RESERVED.</p>
+        <p>© 2026 THE CORNER STONE GROUPS. ALL RIGHTS RESERVED.</p>
         <div className="flex gap-8">
           <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
           <a href="#" className="hover:text-white transition-colors">Terms of Service</a>

@@ -19,7 +19,7 @@ const CTA = () => {
             Looking to hire or build <br className="hidden md:block" /> your career abroad?
           </h2>
           <p className="text-primary-light/80 text-xl mb-12 max-w-2xl mx-auto relative z-10">
-            Join thousands of professionals and students who have successfully reached their global goals with Corner Stone.
+            Join thousands of professionals and students who have successfully reached their global goals with The Corner Stone Groups.
           </p>
           <button className="bg-white text-primary px-10 py-5 rounded-full font-bold text-xl hover:bg-white/90 transition-all shadow-2xl relative z-10 scale-100 hover:scale-105 active:scale-95">
             Get In Touch Now

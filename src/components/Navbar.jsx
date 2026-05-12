@@ -63,7 +63,7 @@ const Navbar = () => {
               <SupabaseImage
                 section="logo"
                 fallbackSrc={logoImgFallback}
-                alt="Corner Stone Logo" 
+                alt="The Corner Stone Groups Logo" 
                 className="h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                 onError={() => setLogoError(true)}
               />
@@ -76,7 +76,7 @@ const Navbar = () => {
               </div>
             )}
             <span className="font-bold text-lg md:text-xl lg:text-2xl tracking-tight text-white group-hover:text-[#6C63FF] transition-colors duration-300 whitespace-nowrap">
-              The Corner Stones
+              The Corner Stone Groups
             </span>
           </div>
         </Link>
